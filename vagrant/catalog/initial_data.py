@@ -102,7 +102,7 @@ book1 = Book(user_id=1,
               price="$14.99",
               author="Donna Green-Goodman, MPH",
               isbn="978-0-9675-6402-8",
-              category=category2)
+              category=category3)
 session.add(book1)
 session.commit()
 
@@ -111,7 +111,7 @@ book2 = Book(user_id=1,
               price="$3.99",
               author="Ani Phyo",
               isbn="978-1-6009-4000-2",
-              category=category2)
+              category=category3)
 session.add(book2)
 session.commit()
 
@@ -120,7 +120,7 @@ book3 = Book(user_id=1,
               price="$24.99",
               author="Neva & Jim Brackett",
               isbn="978-0-8280-1995-8",
-              category=category2)
+              category=category3)
 session.add(book3)
 session.commit()
 
