@@ -292,13 +292,38 @@ def disconnect():
 
 # Show all categories
 @app.route('/')
-@app.route('/categories/')
+@app.route('/categories')
 def showCategories():
+    ''' Function takes no inputs, returns a list of
+        all the categories form the database to the public_categories.html
+        template if a user is not logged in(viewing only); otherwise, returns
+        a list of all the categories to the categories.html template (edit mode),
+        with the variable categories
+    '''
     categories = session.query(Category).order_by(asc(Category.name))
     if 'username' not in login_session:
         return render_template('public_categories.html', categories=categories)
     else:
         return render_template('categories.html', categories=categories)
+
+
+# Show books under Category
+@app.route('/categories/<int:category_id>/book')
+@app.route('/categories/<int:category_id>')
+def showBooks(category_id):
+    ''' Function takes 1 input, returns the books
+        for the category in book.html template with variables
+        category, book and category_id
+        
+        input(s):
+        category_id - the id of the restaurant
+    '''
+    category = session.query(Category).filter_by(id=category_id).one()
+    books = session.query(Book).filter_by(category_id=category_id)
+    if 'username' not in login_session:
+        return render_template('public_book_list.html', category=category, books=books, category_id=category_id)
+    else:
+        return render_template('book_list.html', category=category, books=books, category_id=category_id)
 
 
 if __name__ == '__main__':
