@@ -1,0 +1,37 @@
+{% extends "main.html" %}
+{% block content %}	
+	<div class = "container">
+
+		{% with messages = get_flashed_messages(with_categories=true) %}
+	  			{% if messages %}
+		  			{% for category, message in messages %}
+		  				<div class="alert alert-{{ category }}">{{ message }}</div>
+		  			{% endfor %}
+	  			{% endif %}
+	  	{% endwith %}
+
+	  	<h1>{{category.name}} List of Books</h1>
+	  	<hr>
+      	<h5><a href="/categories">Back To The Category List</a></h5>
+      	<h5><a href="/categories/{{category_id}}/book/new">Add New Book</a></h5>
+	  	<table class="table table-striped">
+	  		<tr>
+	      		<th>Title</th>
+	      		<th>Price</th>
+	      		<th>Author</th>
+	      		<th>ISBN</th>
+	      		<th></th>
+	      		<th></th>
+	      	</tr>
+		  	{% for book in books %}
+		  		<td>{{book.title}}</td>
+		  		<td>{{book.price}}</td>
+		  		<td>{{book.author}}</td>
+		  		<td>{{book.isbn}}</td>
+		  		<td><a href="/categories/{{category_id}}/book/{{book.id}}/edit" class="btn btn-primary">Edit</a></td>
+			  	<td><a href="/categories/{{category_id}}/book/{{book.id}}/delete" class="btn btn-danger">Delete</a></td>
+			</tr>
+		  	{% endfor %}
+		</table>
+	</div>
+{% endblock %}
