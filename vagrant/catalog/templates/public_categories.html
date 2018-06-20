@@ -1,0 +1,32 @@
+{% extends "main.html" %}
+{% block content %}
+  <div class = "container">
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
+  	<h2>List of Categories</h2>
+    	<hr>
+      <table class="table table-striped">
+    		<tr>
+        		<th>Category Names</th>
+            <th></th>
+        		<th></th>
+        		<th></th>
+        	</tr>
+    		{% for category in categories %}
+  		    <tr>
+  		  		<td>{{category.name}}</td>
+            <td><a href="restaurants/{{category.id}}/book" class="btn btn-info pull-right">Books</a></td>
+            <td></td>
+            <td></td>
+  			</tr>
+  		{% endfor %}
+  	</table>
+  </div>
+{% endblock %}
