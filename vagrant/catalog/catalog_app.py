@@ -297,6 +297,22 @@ def showCategories():
         return render_template('categories.html', categories=categories)
 
 
+# Create a new category
+@app.route('/category/new/', methods=['GET', 'POST'])
+def newCategory():
+    if 'username' not in login_session:
+        return redirect('/login')
+    if request.method == 'POST':
+        newCategory = Category(
+            name=request.form['name'], user_id=login_session['user_id'])
+        session.add(newCategory)
+        flash('New Category %s Successfully Created' % category.name, 'success')
+        session.commit()
+        return redirect(url_for('showCategories'))
+    else:
+        return render_template('newCategory.html')
+
+
 # Show books under Category
 @app.route('/category/<int:category_id>/books')
 @app.route('/category/<int:category_id>')
