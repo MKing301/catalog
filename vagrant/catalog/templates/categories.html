@@ -23,9 +23,9 @@
     		{% for category in categories %}
   		    <tr>
   		  		<td>{{category.name}}</td>
-            <td><a href="categories/{{category.id}}/book" class="btn btn-info pull-right">Books</a></td>
-  		  		<td><a href="categories/{{category.id}}/edit" class="btn btn-primary pull-right">Edit</a></td>
-  		  		<td><a href="categories/{{category.id}}/delete" class="btn btn-danger pull-right">Delete</a></td>
+            <td><a href="category/{{category.id}}/book" class="btn btn-info pull-right">Books</a></td>
+  		  		<td><a href="category/{{category.id}}/edit" class="btn btn-primary pull-right">Edit</a></td>
+  		  		<td><a href="category/{{category.id}}/delete" class="btn btn-danger pull-right">Delete</a></td>
   			</tr>
   		{% endfor %}
   	</table>
