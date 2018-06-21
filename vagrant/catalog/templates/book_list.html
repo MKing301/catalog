@@ -13,7 +13,7 @@
 	  	<h1>{{category.name}} List of Books</h1>
 	  	<hr>
       	<h5><a href="/categories">Back To The Category List</a></h5>
-      	<h5><a href="/categories/{{category_id}}/book/new">Add New Book</a></h5>
+      	<h5><a href="/category/{{category_id}}/book/new">Add New Book</a></h5>
 	  	<table class="table table-striped">
 	  		<tr>
 	      		<th>Title</th>
@@ -28,8 +28,8 @@
 		  		<td>{{book.price}}</td>
 		  		<td>{{book.author}}</td>
 		  		<td>{{book.isbn}}</td>
-		  		<td><a href="/categories/{{category_id}}/book/{{book.id}}/edit" class="btn btn-primary">Edit</a></td>
-			  	<td><a href="/categories/{{category_id}}/book/{{book.id}}/delete" class="btn btn-danger">Delete</a></td>
+		  		<td><a href="/category/{{category_id}}/book/{{book.id}}/edit" class="btn btn-primary">Edit</a></td>
+			  	<td><a href="/category/{{category_id}}/book/{{book.id}}/delete" class="btn btn-danger">Delete</a></td>
 			</tr>
 		  	{% endfor %}
 		</table>
