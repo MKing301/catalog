@@ -313,6 +313,22 @@ def newCategory():
         return render_template('newCategory.html')
 
 
+# Edit a category
+@app.route('/category/<int:category_id>/edit/', methods=['GET', 'POST'])
+def editCategory(category_id):
+    if 'username' not in login_session:
+        return redirect('/login')
+    editedCategory = session.query(
+        Category).filter_by(id=category_id).one()
+    if request.method == 'POST':
+        if request.form['name']:
+            editedCategory.name = request.form['name']
+            flash('Category %s Successfully Edited!' % editedRestaurant.name, 'success')
+            return redirect(url_for('showCategories'))
+    else:
+        return render_template('editCategory.html', category=editedCategory)
+
+
 # Show books under Category
 @app.route('/category/<int:category_id>/books')
 @app.route('/category/<int:category_id>')
