@@ -329,6 +329,23 @@ def editCategory(category_id):
         return render_template('editCategory.html', category=editedCategory)
 
 
+# Delete a category
+@app.route('/category/<int:category_id>/delete/', methods=['GET', 'POST'])
+def deleteCategory(category_id):
+    categoryToDelete = session.query(Category).filter_by(id=category_id).one()
+    if 'username' not in login_session:
+        return redirect('/login')
+    if categoryToDelete.user_id != login_session['user_id']:
+        return "<script>function MyFunction() {alert('You are not authorized to delete this category.')}</script><body onload='myFunction()''> "
+    if request.method == 'POST':
+        session.delete(categoryToDelete)
+        flash('%s Successfully Deleted' % categoryToDelete.name, 'success')
+        session.commit()
+        return redirect(url_for('showCategories', category_id=category_id))
+    else:
+        return render_template('deleteCategory.html', category=categoryToDelete)
+
+
 # Show books under Category
 @app.route('/category/<int:category_id>/books')
 @app.route('/category/<int:category_id>')
