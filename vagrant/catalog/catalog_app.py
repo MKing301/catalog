@@ -298,8 +298,8 @@ def showCategories():
 
 
 # Show books under Category
-@app.route('/categories/<int:category_id>/book')
-@app.route('/categories/<int:category_id>')
+@app.route('/category/<int:category_id>/books')
+@app.route('/category/<int:category_id>')
 def showBooks(category_id):
     ''' Function takes 1 input, returns the books
         for the category in book.html template with variables
