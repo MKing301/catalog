@@ -6,6 +6,7 @@ from database_setup import Base, User, Category, Book
 from flask import session as login_session
 import random
 import string
+import ctypes
 
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
@@ -315,12 +316,15 @@ def newCategory():
 
 
 # Edit a category
-@app.route('/category/<int:category_id>/edit', methods=['GET', 'POST'])
+@app.route('/category/<int:category_id>/edit/', methods=['GET', 'POST'])
 def editCategory(category_id):
     if 'username' not in login_session:
         return redirect('/login')
     editedCategory = session.query(
         Category).filter_by(id=category_id).one()
+    if editedCategory.user_id != login_session['user_id']:
+        flash('You are not authorized to edit this category.', 'danger')
+        return redirect(url_for('showCategories'))
     if request.method == 'POST':
         if request.form['name']:
             editedCategory.name = request.form['name']
@@ -331,13 +335,14 @@ def editCategory(category_id):
 
 
 # Delete a category
-@app.route('/category/<int:category_id>/delete', methods=['GET', 'POST'])
+@app.route('/category/<int:category_id>/delete/', methods=['GET', 'POST'])
 def deleteCategory(category_id):
     categoryToDelete = session.query(Category).filter_by(id=category_id).one()
     if 'username' not in login_session:
         return redirect('/login')
     if categoryToDelete.user_id != login_session['user_id']:
-        return "<script>function MyFunction() {alert('You are not authorized to delete this category.')}</script><body onload='myFunction()''> "
+        flash ('You are not authorized to delete this category.', 'danger')
+        return redirect(url_for('showCategories', category_id=category_id))
     if request.method == 'POST':
         session.delete(categoryToDelete)
         session.commit()
@@ -378,8 +383,15 @@ def newBook(category_id):
         input(s):
         category_id - the id of the category
     '''
+    if 'username' not in login_session:
+        return redirect('/login')
     if request.method == 'POST':
-        newBook = Book(title=request.form['newBookTitle'], price=request.form['newBookPrice'], author=request.form['newBookAuthor'], isbn=request.form['newBookIsbn'], category_id=category_id)
+        newBook = Book(title=request.form['newBookTitle'],
+                       price=request.form['newBookPrice'],
+                       author=request.form['newBookAuthor'],
+                       isbn=request.form['newBookIsbn'],
+                       category_id=category_id,
+                       user_id=login_session['user_id'])
         session.add(newBook)
         session.commit()
         flash('New Book Added!', 'success')
@@ -402,17 +414,25 @@ def editBook(category_id, book_id):
         category_id - the id of the category
         book_id - the id of the book
     '''
+    if 'username' not in login_session:
+        return redirect('/login')
     editedBook = session.query(Book).filter_by(id=book_id).one()
+    if editedBook.user_id != login_session['user_id']:
+        flash('You are not authorized to edit this book.', 'danger')
+        return redirect(url_for('showBooks', category_id=category_id))
     if request.method == 'POST':
-        if request.form['revisedBook']:
+        if request.form['revisedBookTitle']:
             editedBook.title = request.form['revisedBookTitle']
+        if request.form['revisedBookPrice']:
             editedBook.price = request.form['revisedBookPrice']
+        if request.form['revisedBookAuthor']:
             editedBook.author = request.form['revisedBookAuthor']
+        if request.form['revisedBookIsbn']:
             editedBook.isbn = request.form['revisedBookIsbn']
         session.add(editedBook)
         session.commit()
         flash('Book Successsfully Edited!', 'success')
-        return redirect(url_for('showMenu', category_id=category_id))
+        return redirect(url_for('showBooks', category_id=category_id))
     else:
         return render_template('editbook.html', category_id=category_id, book_id=book_id, book=editedBook)
 
