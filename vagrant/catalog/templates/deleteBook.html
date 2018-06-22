@@ -4,7 +4,7 @@
 		<h1>Delete Book Confirmation</h1>
 	  	<p>Are you sure you want to delete the {{book.name}}?</p>
 	  	<form action = "{{ url_for('deleteBook',category_id = book.category_id, book_id = book.id) }}" method = 'POST'>
-	  		<a href="/category/{{category_id}}/book" class="btn btn-secondary">Cancel</a>
+	  		<a href="/category/{{category_id}}/books" class="btn btn-secondary">Cancel</a>
 	  		<input type="submit" class="btn btn-primary" value="Delete">
 	  	</form>
 	</div>
