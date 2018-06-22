@@ -1,13 +1,28 @@
 {% extends "main.html" %}
 {% block content %}
 	<div class = "containter">
-		<h1>Edit Menu Item</h1>
+		<h1>Edit Book</h1>
 		<form action = "{{ url_for('editBook',category_id = category_id, book_id = book_id, book = editedBook) }}" method = 'POST'>
-	  		<p>Name:
-				<input type="text" name="revisedBook"placeholder= '{{book.title}}'>
-	  		</p>
-	  		<input type="submit" class="btn btn-primary" value="Edit">
-	  		<a href="/categories/{{category_id}}/book" class="btn btn-secondary">Cancel</a>
+			<table>
+				<tr>
+			  		<td>Title:</td>
+					<td><input type="text" name="revisedBookTitle"placeholder= '{{book.title}}'></td>
+			  	</tr>
+			  	<tr>
+			  		<td>Price:</td>
+					<td><input type="text" name="revisedBookPrice"placeholder= '{{book.price}}'></td>
+			  	</tr>
+			  	<tr>
+			  		<td>Author:</td>
+					<td><input type="text" name="revisedBookAuthor"placeholder= '{{book.author}}'></td>
+			  	</tr>
+			  	<tr>
+			  		<td>ISBN:</td>
+					<td><input type="text" name="revisedBookIsbn"placeholder= '{{book.isbn}}'></td>
+			  	</tr>
+			</table>
+	  		<td><input type="submit" class="btn btn-primary" value="Update">
+	  		<a href="/category/{{category_id}}/books" class="btn btn-secondary">Cancel</a></td>
 		</form>
 	</div>
 {% endblock %}
