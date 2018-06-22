@@ -367,7 +367,7 @@ def showBooks(category_id):
 
 
 # Add Book
-@app.route('/categories/<int:category_id>/book/new', methods=['GET', 'POST'])
+@app.route('/category/<int:category_id>/book/new', methods=['GET', 'POST'])
 def newBook(category_id):
     ''' Function takes one inputs, for post request 
         adds a new book in the database for a 
@@ -382,14 +382,14 @@ def newBook(category_id):
         newBook = Book(title=request.form['newBookTitle'], price=request.form['newBookPrice'], author=request.form['newBookAuthor'], isbn=request.form['newBookIsbn'], category_id=category_id)
         session.add(newBook)
         session.commit()
-        flash('Menu Book Added!', 'success')
+        flash('New Book Added!', 'success')
         return redirect(url_for('showBooks', category_id=category_id))
     else:
         return render_template('newBook.html', category_id=category_id)
 
 
 # Edit Book
-@app.route('/categories/<int:category_id>/book/<int:book_id>/edit', methods=['GET', 'POST'])
+@app.route('/category/<int:category_id>/book/<int:book_id>/edit', methods=['GET', 'POST'])
 def editBook(category_id, book_id):
     ''' Function takes 2 inputs. For post request,
         edits a book in the database for the 
@@ -405,7 +405,10 @@ def editBook(category_id, book_id):
     editedBook = session.query(Book).filter_by(id=book_id).one()
     if request.method == 'POST':
         if request.form['revisedBook']:
-            editedBook.title = request.form['revisedBook']
+            editedBook.title = request.form['revisedBookTitle']
+            editedBook.price = request.form['revisedBookPrice']
+            editedBook.author = request.form['revisedBookAuthor']
+            editedBook.isbn = request.form['revisedBookIsbn']
         session.add(editedBook)
         session.commit()
         flash('Book Successsfully Edited!', 'success')
