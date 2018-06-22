@@ -1,5 +1,5 @@
 {% extends "main.html" %}
-{% block c
+{% block content %}
 	<div class = "containter">
 		<h1>Edit Menu Item</h1>
 		<form action = "{{ url_for('editBook',category_id = category_id, book_id = book_id, book = editedBook) }}" method = 'POST'>
