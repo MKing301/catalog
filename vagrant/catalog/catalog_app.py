@@ -326,9 +326,9 @@ def editCategory(category_id):
         flash('You are not authorized to edit this category.', 'danger')
         return redirect(url_for('showCategories'))
     if request.method == 'POST':
-        if request.form['name']:
-            editedCategory.name = request.form['name']
-            flash('Category %s Successfully Edited!' % editedRestaurant.name, 'success')
+        if request.form['revisedCategory']:
+            editedCategory.name = request.form['revisedCategory']
+            flash('Category Successfully Edited!', 'success')
             return redirect(url_for('showCategories'))
     else:
         return render_template('editCategory.html', category=editedCategory)
