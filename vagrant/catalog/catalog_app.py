@@ -337,9 +337,9 @@ def editCategory(category_id):
 # Delete a category
 @app.route('/category/<int:category_id>/delete/', methods=['GET', 'POST'])
 def deleteCategory(category_id):
-    categoryToDelete = session.query(Category).filter_by(id=category_id).one()
     if 'username' not in login_session:
         return redirect('/login')
+    categoryToDelete = session.query(Category).filter_by(id=category_id).one()
     if categoryToDelete.user_id != login_session['user_id']:
         flash ('You are not authorized to delete this category.', 'danger')
         return redirect(url_for('showCategories', category_id=category_id))
@@ -435,6 +435,33 @@ def editBook(category_id, book_id):
         return redirect(url_for('showBooks', category_id=category_id))
     else:
         return render_template('editbook.html', category_id=category_id, book_id=book_id, book=editedBook)
+
+
+# Delete book
+def deleteBook(category_id, book_id):
+    ''' Function takes 2 inputs, for post request it 
+        deletes a new menu item from the database for a 
+        restaurant and redirects user to the showMenu 
+        funtion.  For get request, returns deleteconfirmation.html 
+        template with variables restaurant_id and item
+
+        input(s):
+        restaurant_id - the id of the 
+        menu_id - the id of the menu item
+    '''
+    if 'username' not in login_session:
+        return redirect('/login')
+    bookToDelete = session.query(Book).filter_by(id=book_id).one()
+    if bookToDelete.user_id != login_session['user_id']:
+        flash ('You are not authorized to delete this book.', 'danger')
+        return redirect(url_for('showBooks', category_id=category_id))
+    if request.method == 'POST':
+        session.delete(bookToDelete)
+        session.commit()
+        flash('Book Successfully Deleted!', 'success')
+        return redirect(url_for('showBooks', category_id=category_id))
+    else:
+        return render_template('deleteBook.html', category_id=category_id, book=bookToDelete)
 
 
 if __name__ == '__main__':
