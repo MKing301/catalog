@@ -438,6 +438,7 @@ def editBook(category_id, book_id):
 
 
 # Delete book
+@app.route('/category/<int:category_id>/book/<int:book_id>/delete', methods=['GET', 'POST'])
 def deleteBook(category_id, book_id):
     ''' Function takes 2 inputs, for post request it 
         deletes a new menu item from the database for a 
