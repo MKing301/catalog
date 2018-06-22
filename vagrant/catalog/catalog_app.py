@@ -304,9 +304,9 @@ def newCategory():
         return redirect('/login')
     if request.method == 'POST':
         newCategory = Category(
-            name=request.form['name'], user_id=login_session['user_id'])
+            name=request.form['newCategoryName'], user_id=login_session['user_id'])
         session.add(newCategory)
-        flash('New Category %s Successfully Created' % category.name, 'success')
+        flash('New Category Successfully Created', 'success')
         session.commit()
         return redirect(url_for('showCategories'))
     else:
@@ -314,7 +314,7 @@ def newCategory():
 
 
 # Edit a category
-@app.route('/category/<int:category_id>/edit/', methods=['GET', 'POST'])
+@app.route('/category/<int:category_id>/edit', methods=['GET', 'POST'])
 def editCategory(category_id):
     if 'username' not in login_session:
         return redirect('/login')
@@ -330,20 +330,22 @@ def editCategory(category_id):
 
 
 # Delete a category
-@app.route('/category/<int:category_id>/delete/', methods=['GET', 'POST'])
+@app.route('/category/<int:category_id>/delete', methods=['GET', 'POST'])
 def deleteCategory(category_id):
     categoryToDelete = session.query(Category).filter_by(id=category_id).one()
+    print categoryToDelete.user_id
+    print username
     if 'username' not in login_session:
         return redirect('/login')
     if categoryToDelete.user_id != login_session['user_id']:
         return "<script>function MyFunction() {alert('You are not authorized to delete this category.')}</script><body onload='myFunction()''> "
     if request.method == 'POST':
         session.delete(categoryToDelete)
-        flash('%s Successfully Deleted' % categoryToDelete.name, 'success')
         session.commit()
+        flash('Category Successfully Deleted!', 'success')
         return redirect(url_for('showCategories', category_id=category_id))
     else:
-        return render_template('deleteCategory.html', category=categoryToDelete)
+        return render_template('deleteCategory.html', categoryToDelete=categoryToDelete, category_id=category_id)
 
 
 # Show books under Category
@@ -363,6 +365,32 @@ def showBooks(category_id):
         return render_template('public_book_list.html', category=category, books=books, category_id=category_id)
     else:
         return render_template('book_list.html', category=category, books=books, category_id=category_id)
+
+
+# Edit Book
+@app.route('/categories/<int:category_id>/book/<int:book_id>/edit', methods=['GET', 'POST'])
+def editBook(category_id, book_id):
+    ''' Function takes 2 inputs. For post request,
+        edits a book in the database for the 
+        selected category by category id and book id, 
+        then redirects user to the showBooks
+        function.  For get request, returns editBook.html
+        template with variables category_id , book_id and book
+
+        input(s):
+        category_id - the id of the category
+        book_id - the id of the book
+    '''
+    editedBook = session.query(Book).filter_by(id=book_id).one()
+    if request.method == 'POST':
+        if request.form['revisedBook']:
+            editedBook.title = request.form['revisedBook']
+        session.add(editedBook)
+        session.commit()
+        flash('Book Successsfully Edited!', 'success')
+        return redirect(url_for('showMenu', category_id=category_id))
+    else:
+        return render_template('editbook.html', category_id=category_id, book_id=book_id, book=editedBook)
 
 
 if __name__ == '__main__':
