@@ -1,0 +1,13 @@
+{% extends "main.html" %}
+{% block c
+	<div class = "containter">
+		<h1>Edit Menu Item</h1>
+		<form action = "{{ url_for('editBook',category_id = category_id, book_id = book_id, book = editedBook) }}" method = 'POST'>
+	  		<p>Name:
+				<input type="text" name="revisedBook"placeholder= '{{book.title}}'>
+	  		</p>
+	  		<input type="submit" class="btn btn-primary" value="Edit">
+	  		<a href="/categories/{{category_id}}/book" class="btn btn-secondary">Cancel</a>
+		</form>
+	</div>
+{% endblock %}
