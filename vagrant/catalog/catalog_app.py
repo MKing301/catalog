@@ -14,6 +14,7 @@ import httplib2
 import json
 from flask import make_response
 import requests
+from unicodedata import category
 
 auth = HTTPBasicAuth()
 
@@ -333,8 +334,6 @@ def editCategory(category_id):
 @app.route('/category/<int:category_id>/delete', methods=['GET', 'POST'])
 def deleteCategory(category_id):
     categoryToDelete = session.query(Category).filter_by(id=category_id).one()
-    print categoryToDelete.user_id
-    print username
     if 'username' not in login_session:
         return redirect('/login')
     if categoryToDelete.user_id != login_session['user_id']:
@@ -365,6 +364,28 @@ def showBooks(category_id):
         return render_template('public_book_list.html', category=category, books=books, category_id=category_id)
     else:
         return render_template('book_list.html', category=category, books=books, category_id=category_id)
+
+
+# Add Book
+@app.route('/categories/<int:category_id>/book/new', methods=['GET', 'POST'])
+def newBook(category_id):
+    ''' Function takes one inputs, for post request 
+        adds a new book in the database for a 
+        category and redirects user to the showBooks 
+        function.  For get request, returns newBook.html 
+        template with variable category_id
+
+        input(s):
+        category_id - the id of the category
+    '''
+    if request.method == 'POST':
+        newBook = Book(title=request.form['newBookTitle'], price=request.form['newBookPrice'], author=request.form['newBookAuthor'], isbn=request.form['newBookIsbn'], category_id=category_id)
+        session.add(newBook)
+        session.commit()
+        flash('Menu Book Added!', 'success')
+        return redirect(url_for('showBooks', category_id=category_id))
+    else:
+        return render_template('newBook.html', category_id=category_id)
 
 
 # Edit Book
