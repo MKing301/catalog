@@ -1,0 +1,29 @@
+{% extends "main.html" %}
+{% block content %}
+	<div class = "container">
+		<h1>New Menu Item</h1>
+		<hr>
+	  	<form action = "{{ url_for('newBook', category_id = category_id) }}" method="post">
+	  		<table>
+	  			<tr>
+		  			<td>Title:</td>
+					<td><input type="text" name="newBookTitle" placeholder="New Book Title"></td>
+				</tr>
+				<tr>
+					<td>Price:</td>
+					<td><input type="text" name="newBookPrice" placeholder="New Book Price"></td>
+				</tr>
+				<tr>
+					<td>Author:</td>
+					<td><input type="text" name="newBookAuthor" placeholder="New Book Author"></td>
+				</tr>
+				<tr>
+					<td>ISBN:</td>
+					<td><input type="text" name="newBookIsbn" placeholder="New Book ISBN"></td>
+				</tr>
+			</table>
+			<td><input type = 'submit' class="btn btn-primary pull-right" value = 'Add'>
+			<a href="/categories/{{category_id}}/menu" class="btn btn-secondary pull-right">Cancel</a></td>
+		</form>
+  	</div>
+{% endblock %}
