@@ -80,3 +80,4 @@ vagrant@vagrant:~$
 7. Open a browser window and type `http://localhost:5000/`
 8. Press the `ENTER` key to open the web application
 9. To stop the program, in your terminal type `CTRL + C`
+10. To close the VM type `vagrant halt` or `winpty vagrant halt` (Git Bash on Windows).
