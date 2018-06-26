@@ -350,10 +350,12 @@ def editCategory(category_id):
     if request.method == 'POST':
         if request.form['revisedCategory']:
             editedCategory.name = request.form['revisedCategory']
-            flash('Category Successfully Edited!', 'success')
-            return redirect(url_for('showCategories'))
+        session.add(editedCategory)
+        session.commit()
+        flash('Category Successfully Edited!', 'success')
+        return redirect(url_for('showCategories'))
     else:
-        return render_template('editCategory.html', category=editedCategory)
+        return render_template('editCategory.html', category_id=editedCategory.id, name=editedCategory.name)
 
 
 # Delete a category
