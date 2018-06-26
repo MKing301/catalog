@@ -77,3 +77,6 @@ vagrant@vagrant:~$
 4. At `vagrant@vagrant:/vagrant/catalog$` prompt type `python initial_data.py` to load initial data for application.
 5. Next, type `python catalog_app.py`.
 6. Press the `ENTER` key to run the program.
+7. Open a browser window and type `http://localhost:5000/`
+8. Press the `ENTER` key to open the web application
+9. To stop the program, in your terminal type `CTRL + C`
