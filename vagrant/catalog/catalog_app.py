@@ -6,7 +6,6 @@ from database_setup import Base, User, Category, Book
 from flask import session as login_session
 import random
 import string
-import ctypes
 
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
@@ -280,6 +279,29 @@ def disconnect():
     else:
         flash("You were not logged in to begin with!")
         return redirect(url_for('showCategories'))
+
+
+# JSON API Endpoint to view all categories
+@app.route('/categories/JSON')
+def categoriesJSON():
+    categories = session.query(Category).all()
+    return jsonify(categories=[category.serialize for category in categories])
+
+
+# JSON API Endpoint to view all books in a category
+@app.route('/category/<int:category_id>/books/JSON')
+def categoryBooksJSON(category_id):
+    category = session.query(Category).filter_by(id=category_id).one()
+    books = session.query(Book).filter_by(
+        category_id=category_id).all()
+    return jsonify(categoryBooks=[categoryBooks.serialize for categoryBooks in books])
+
+
+# JSON API Endpoint to view a single book in a category
+@app.route('/category/<int:category_id>/book/<int:book_id>/JSON')
+def categoryBookJSON(category_id, book_id):
+    book = session.query(Book).filter_by(id=book_id).one()
+    return jsonify(book=book.serialize)
 
 
 # Show all categories
