@@ -30,8 +30,7 @@ You do not need to launch VirtualBox after installing it.
 ## Installing Vagrant
 
 Vagrant is the program that will download a Linux operating system and run it inside the virtual machine. [Install_it_from_this_site](https://www.vagrantup.com/downloads.html).
-Windows users: The Installer may ask you to grant network permissions to Vagrant or make a firewall 
-exception. Be sure to allow this.
+Windows users: The Installer may ask you to grant network permissions to Vagrant or make a firewall exception. Be sure to allow this.
 
 ## Bringing up the virtual machine
 
@@ -77,7 +76,7 @@ vagrant@vagrant:~$
 4. At `vagrant@vagrant:/vagrant/catalog$` prompt type `python initial_data.py` to load initial data for application.
 5. Next, type `python catalog_app.py`.
 6. Press the `ENTER` key to run the program.
-7. Open a browser window and type `http://localhost:5000/`
+7. Open a browser window and type in the url `http://localhost:5000/`
 8. Press the `ENTER` key to open the web application
 9. To stop the program, in your terminal type `CTRL + C`
 10. To close the VM type `vagrant halt` or `winpty vagrant halt` (Git Bash on Windows).
