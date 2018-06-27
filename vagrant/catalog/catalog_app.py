@@ -1,19 +1,18 @@
+import random
+import string
+import httplib2
+import json
+import requests
 from flask import Flask, render_template, request, redirect, jsonify, url_for, flash
 from sqlalchemy import create_engine, asc
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, User, Category, Book
 from flask import session as login_session
-import random
-import string
-
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 from flask_httpauth import HTTPBasicAuth
-import httplib2
-import json
 from flask import make_response
-import requests
 from unicodedata import category
 
 auth = HTTPBasicAuth()
@@ -43,6 +42,7 @@ def showLogin():
 
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
+    '''Function connects a session based on Facebook user's credentials'''
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -110,6 +110,7 @@ def fbconnect():
 
 @app.route('/fbdisconnect')
 def fbdisconnect():
+    '''Function disconnects Facebook user's session.'''
     facebook_id = login_session['facebook_id']
     # The access token must me included to successfully logout
     access_token = login_session['access_token']
@@ -126,6 +127,7 @@ def fbdisconnect():
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
+    '''Function connects a session based on Google user's credentials'''
     # Validate state token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
@@ -241,6 +243,7 @@ def getUserID(email):
 
 @app.route('/gdisconnect')
 def gdisconnect():
+    '''Function disconnects Google user'''
     access_token = login_session.get('access_token')
     if access_token is None:
         print 'Access Token is None'
@@ -267,6 +270,9 @@ def gdisconnect():
 
 @app.route('/disconnect')
 def disconnect():
+    '''Function disconnects Facebook or Google session based on 
+       which provider in use.
+    '''
     if 'provider' in login_session:
         if login_session['provider'] == 'google':
             gdisconnect()
