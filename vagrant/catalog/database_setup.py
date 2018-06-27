@@ -25,11 +25,11 @@ class Category(Base):
 
     @property
     def serialize(self):
-       """Return object data in easily serializeable format"""
-       return {
-           'name'         : self.name,
-           'id'           : self.id,
-       }
+        '''Return object data in easily serializeable format'''
+        return {
+           'name': self.name,
+           'id': self.id,
+        }
 
 
 class Book(Base):
@@ -47,14 +47,14 @@ class Book(Base):
 
     @property
     def serialize(self):
-       """Return object data in easily serializeable format"""
-       return {
-           'title'         : self.title,
-           'price'         : self.price,
-           'id'         : self.id,
-           'author'         : self.author,
-           'isbn'         : self.isbn,
-       }
+        '''Return object data in easily serializeable format'''
+        return {
+           'title': self.title,
+           'price': self.price,
+           'id': self.id,
+           'author': self.author,
+           'isbn': self.isbn,
+        }
 
 
 engine = create_engine('sqlite:///categories_books_users.db')
