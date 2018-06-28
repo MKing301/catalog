@@ -78,7 +78,7 @@ Once you have downloaded the repository, in your terminal change to that directo
 1. In your terminal, type `cd vagrant` 
 2. Next, type `ls`, to see the `Vagrantfile` and the following directories: catalog, forum and tournament. 
 3. Type `vagrant up` (reference 'Bringing Up the Virtual Machine' section above)
-4. Type `vagranst ssh`
+4. Type `vagrant ssh`
 5. At `vagrant@vagrant:~$` prompt `cd /vagrant`
 6. At `vagrant@vagrant:/vagrant$` type `cd catalog` to enter the catalog directory.
 7. At `vagrant@vagrant:/vagrant/catalog$` prompt type `python initial_data.py` to load initial data for application.
