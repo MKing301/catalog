@@ -13,13 +13,16 @@ Requirements
 # Resources
 
 ## Download the Repository
-The repository containing all the necessary files to run this project is located [here](https://github.com/MKing301/fullstack-nanodegree-vm).
-You can download the repository to your local machine.
+The repository contains all the necessary files to run the application.
+You can download this repository to your local machine.
+
+
+
+# Installation
+You will need to perform the following operations for the application to work successfully:
 
 * Installing VirtualBox
 * Installing Vagrant
-
-# Installation
 
 ## Installing VirtualBox
 
