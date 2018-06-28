@@ -73,13 +73,18 @@ vagrant@vagrant:~$
 
 # Run the program
 
-1. In VM, type `cd vagrant` 
+Once you have downloaded the repository, in your terminal change to that directory:
+
+1. In your terminal, type `cd vagrant` 
 2. Next, type `ls`, to see the `Vagrantfile` and the following directories: catalog, forum and tournament. 
-3. At `vagrant@vagrant:/vagrant$` prompt type `cd catalog` to enter the catalog directory.
-4. At `vagrant@vagrant:/vagrant/catalog$` prompt type `python initial_data.py` to load initial data for application.
-5. Next, type `python catalog_app.py`.
-6. Press the `ENTER` key to run the program.
-7. Open a browser window and type in the url `http://localhost:5000/`
-8. Press the `ENTER` key to open the web application
-9. To stop the program, in your terminal type `CTRL + C`
-10. To close the VM type `vagrant halt` or `winpty vagrant halt` (Git Bash on Windows).
+3. Type `vagrant up` (reference 'Bringing Up the Virtual Machine' section above)
+4. Type `vagranst ssh`
+5. At `vagrant@vagrant:~$` prompt `cd /vagrant`
+6. At `vagrant@vagrant:/vagrant$` type `cd catalog` to enter the catalog directory.
+7. At `vagrant@vagrant:/vagrant/catalog$` prompt type `python initial_data.py` to load initial data for application.
+8. Next, type `python catalog_app.py`.
+9. Press the `ENTER` key to run the program.
+10. Open a browser window and type in the url `http://localhost:5000/`
+11. Press the `ENTER` key to open the web application
+12. To stop the program, in your terminal type `CTRL + C`
+13. To close the VM type `vagrant halt` or `winpty vagrant halt` (Git Bash on Windows).
