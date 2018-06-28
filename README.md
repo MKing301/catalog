@@ -21,8 +21,8 @@ You can download this repository to your local machine.
 # Installation
 You will need to perform the following operations for the application to work successfully:
 
-* Installing VirtualBox
-* Installing Vagrant
+* Install VirtualBox
+* Install Vagrant
 
 ## Installing VirtualBox
 
@@ -73,7 +73,7 @@ vagrant@vagrant:~$
 
 # Run the program
 
-1. In VM, type `cd /vagrant` 
+1. In VM, type `cd vagrant` 
 2. Next, type `ls`, to see the `Vagrantfile` and the following directories: catalog, forum and tournament. 
 3. At `vagrant@vagrant:/vagrant$` prompt type `cd catalog` to enter the catalog directory.
 4. At `vagrant@vagrant:/vagrant/catalog$` prompt type `python initial_data.py` to load initial data for application.
