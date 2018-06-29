@@ -90,4 +90,4 @@ Once you have downloaded the repository, in your terminal change to that directo
 13. To close the VM type `vagrant halt` or `winpty vagrant halt` (Git Bash on Windows).
 14. To access categories via JSON API endpoint, type `http://localhost:5000/categories/JSON` in broswer and press `ENTER`
 15. To access a list of books in a particular category via JSON API endpoint, type `http://localhost:5000/category/<category id>/books/JSON` and press `ENTER`
-16. 15. To access a specific book in a particular category via JSON API endpoint, type `http://localhost:5000/category/<category id>/book/<book id>/JSON` and press `ENTER`
+16. To access a specific book in a particular category via JSON API endpoint, type `http://localhost:5000/category/<category id>/book/<book id>/JSON` and press `ENTER`
