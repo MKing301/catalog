@@ -16,10 +16,8 @@ from flask_httpauth import HTTPBasicAuth
 from flask import make_response
 from unicodedata import category
 
-auth = HTTPBasicAuth()
-
 app = Flask(__name__)
-
+auth = HTTPBasicAuth()
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Book Catalog Application"
