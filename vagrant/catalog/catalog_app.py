@@ -433,8 +433,9 @@ def editCategory(category_id):
         flash('Category Successfully Edited!', 'success')
         return redirect(url_for('showCategories'))
     else:
-        return render_template('''editCategory.html
-        ''', category_id=editedCategory.id, name=editedCategory.name)
+        return render_template('editCategory.html',
+                               category_id=editedCategory.id,
+                               name=editedCategory.name)
 
 
 # Delete a category
