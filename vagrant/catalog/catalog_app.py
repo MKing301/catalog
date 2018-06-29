@@ -56,7 +56,11 @@ def fbconnect():
         'web']['app_id']
     app_secret = json.loads(
         open('fb_client_secrets.json', 'r').read())['web']['app_secret']
-    url = 'https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=%s&client_secret=%s&fb_exchange_token=%s' % (
+    url = (
+        'https://graph.facebook.com/oauth/access_token?'
+        'grant_type=fb_exchange_token&client_id=%s&client_secret=%s'
+        '&fb_exchange_token=%s'
+        ) % (
         app_id, app_secret, access_token)
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
@@ -73,7 +77,10 @@ def fbconnect():
     '''
     token = result.split(',')[0].split(':')[1].replace('"', '')
 
-    url = 'https://graph.facebook.com/v2.8/me?access_token=%s&fields=name,id,email' % token
+    url = (
+        'https://graph.facebook.com/v2.8/me?access_token=%s'
+        '&fields=name,id,email'
+        ) % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result)
@@ -86,7 +93,10 @@ def fbconnect():
     login_session['access_token'] = token
 
     # Get user picture
-    url = 'https://graph.facebook.com/v2.8/me/picture?access_token=%s&redirect=0&height=200&width=200' % token
+    url = (
+        'https://graph.facebook.com/v2.8/me/picture?access_token=%s'
+        '&redirect=0&height=200&width=200'
+        ) % token
     h = httplib2.Http()
     result = h.request(url, 'GET')[1]
     data = json.loads(result)
@@ -106,7 +116,10 @@ def fbconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px;height: 300px;border-radius: 150px; -webkit-border-radius: 150px; -moz-border-radius: 150px;"> '
+    output += ''' " style = "width: 300px;
+                                height: 300px;border-radius: 150px;
+                                -webkit-border-radius: 150px;
+                                -moz-border-radius: 150px;"> '''
 
     flash("Now logged in as %s" % login_session['username'], 'success')
     return output
@@ -119,7 +132,9 @@ def fbdisconnect():
     facebook_id = login_session['facebook_id']
     # The access token must me included to successfully logout
     access_token = login_session['access_token']
-    url = 'https://graph.facebook.com/%s/permissions?access_token=%s' % (facebook_id, access_token)
+    url = (
+        'https://graph.facebook.com/%s/permissions?access_token=%s'
+        ) % (facebook_id, access_token)
     h = httplib2.Http()
     result = h.request(url, 'DELETE')[1]
     del login_session['username']
@@ -184,7 +199,8 @@ def gconnect():
     stored_access_token = login_session.get('access_token')
     stored_gplus_id = login_session.get('gplus_id')
     if stored_access_token is not None and gplus_id == stored_gplus_id:
-        response = make_response(json.dumps('Current user is already connected.'),
+        response = make_response(json.dumps(
+            'Current user is already connected.'),
                                  200)
         response.headers['Content-Type'] = 'application/json'
         return response
@@ -218,7 +234,10 @@ def gconnect():
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
-    output += ' " style = "width: 300px; height: 300px;border-radius: 150px; -webkit-border-radius: 150px; -moz-border-radius: 150px;"> '
+    output += ''' " style = "width: 300px;
+                    height: 300px;border-radius: 150px;
+                    -webkit-border-radius: 150px;
+                    -moz-border-radius: 150px;"> '''
     flash("you are now logged in as %s" % login_session['username'], 'success')
     return output
 
@@ -267,10 +286,13 @@ def gdisconnect():
     access_token = login_session.get('access_token')
     if access_token is None:
         print 'Access Token is None'
-        response = make_response(json.dumps('Current user not connected.'), 401)
+        response = make_response(json.dumps(
+            'Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
         return response
-    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % login_session['access_token']
+    url = (
+        'https://accounts.google.com/o/oauth2/revoke?token=%s'
+        ) % login_session['access_token']
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     if result['status'] == '200':
@@ -283,7 +305,8 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
     else:
-        response = make_response(json.dumps('Failed to revoke token for given user.', 400))
+        response = make_response(json.dumps(
+            'Failed to revoke token for given user.', 400))
         response.headers['Content-Type'] = 'application/json'
         return response
 
@@ -326,7 +349,8 @@ def categoryBooksJSON(category_id):
     category = session.query(Category).filter_by(id=category_id).one()
     books = session.query(Book).filter_by(
         category_id=category_id).all()
-    return (jsonify(categoryBooks=[categoryBooks.serialize for categoryBooks in books]))
+    return (jsonify(categoryBooks=[
+        categoryBooks.serialize for categoryBooks in books]))
 
 
 # JSON API Endpoint to view a single book in a category
