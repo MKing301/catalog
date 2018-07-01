@@ -73,21 +73,20 @@ vagrant@vagrant:~$
 
 # Run the program
 
-Once you have downloaded the repository, in your terminal change to that directory:
+Once you have downloaded and unzipped the repository; in your terminal, change to that directory:
 
-1. In your terminal, type `cd vagrant` 
-2. Next, type `ls`, to see the `Vagrantfile` and the following directories: catalog, forum and tournament. 
+1. In your terminal, type `cd catalog` 
+2. Next, type `ls`, to see `Vagrantfile`, the project files and the template directory. 
 3. Type `vagrant up` (reference 'Bringing Up the Virtual Machine' section above)
 4. Type `vagrant ssh`
 5. At `vagrant@vagrant:~$` prompt, type `cd /vagrant`
-6. At `vagrant@vagrant:/vagrant$` prompt, type `cd catalog` to enter the catalog directory.
-7. At `vagrant@vagrant:/vagrant/catalog$` prompt, type `python initial_data.py` to load initial data for application.
-8. Next, type `python catalog_app.py`.
-9. Press the `ENTER` key to run the program.
-10. Open a browser window and type in the url `http://localhost:5000/`
-11. Press the `ENTER` key to open the web application
-12. To stop the program, in your terminal type `CTRL + C`
-13. To close the VM type `vagrant halt` or `winpty vagrant halt` (Git Bash on Windows).
-14. To access categories via JSON API endpoint, type `http://localhost:5000/categories/JSON` in broswer and press `ENTER`
-15. To access a list of books in a particular category via JSON API endpoint, type `http://localhost:5000/category/<category id>/books/JSON` and press `ENTER`
-16. To access a specific book in a particular category via JSON API endpoint, type `http://localhost:5000/category/<category id>/book/<book id>/JSON` and press `ENTER`
+6. At `vagrant@vagrant:/vagrant$` prompt, `python initial_data.py` to load initial data for application.
+7. Next, type `python catalog_app.py`.
+8. Press the `ENTER` key to run the program.
+9. Open a browser window and type in the url `http://localhost:5000/`
+10. Press the `ENTER` key to open the web application
+11. To access categories via JSON API endpoint, type `http://localhost:5000/categories/JSON` in broswer and press `ENTER`
+12. To access a list of books in a particular category via JSON API endpoint, type `http://localhost:5000/category/<category id>/books/JSON` and press `ENTER`
+13. To access a specific book in a particular category via JSON API endpoint, type `http://localhost:5000/category/<category id>/book/<book id>/JSON` and press `ENTER`
+14. To stop the program, in your terminal type `CTRL + C`
+15. To close the VM type `vagrant halt` or `winpty vagrant halt` (Git Bash on Windows).
