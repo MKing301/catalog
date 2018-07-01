@@ -7,6 +7,14 @@ Base = declarative_base()
 
 
 class User(Base):
+    '''A user of the catalog app program. Users will have
+       the following attributes:
+       Attibute(s):
+       id - unique id number for each user
+       name - user's name
+       email - user's email address
+       picture - user's picture
+    '''
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
@@ -16,6 +24,12 @@ class User(Base):
 
 
 class Category(Base):
+    '''A category for the books in the catalog app program. Categories will have
+       the following attributes:
+       Attibute(s):
+       id - unique id number
+       user_id - id of user that created the category
+    '''
     __tablename__ = 'category'
 
     id = Column(Integer, primary_key=True)
@@ -25,7 +39,7 @@ class Category(Base):
 
     @property
     def serialize(self):
-        '''Return object data in easily serializeable format'''
+        '''Return category object data in easily serializeable format'''
         return {
            'name': self.name,
            'id': self.id,
@@ -33,6 +47,17 @@ class Category(Base):
 
 
 class Book(Base):
+    '''A book in the catalog app program. Books will have
+       the following attributes:
+       Attibute(s):
+       title - title of the book
+       id - unique id number for each book
+       price - price of the book
+       author - author of the book
+       isbn - isbn for the book
+       category_id - id of the category the book is located
+       user_id - id of user that created the book
+    '''
     __tablename__ = 'book'
 
     title = Column(String(250), nullable=False)
@@ -47,7 +72,7 @@ class Book(Base):
 
     @property
     def serialize(self):
-        '''Return object data in easily serializeable format'''
+        '''Return book object data in easily serializeable format'''
         return {
            'title': self.title,
            'price': self.price,

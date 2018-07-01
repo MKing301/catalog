@@ -29,7 +29,7 @@ DBSession = sessionmaker(bind=engine)
 session = scoped_session(DBSession)
 
 
-# Create anti-forgery state token
+# Create anti-forgery state token (course)
 @app.route('/login')
 def showLogin():
     '''Create a unique session token, named state.  The variable
@@ -41,7 +41,7 @@ def showLogin():
     return render_template('login.html', STATE=state)
 
 
-# Establish connection using Facebook credentials
+# Establish connection using Facebook credentials (course)
 @app.route('/fbconnect', methods=['POST'])
 def fbconnect():
     '''Function connects a session based on Facebook user's
@@ -125,7 +125,7 @@ def fbconnect():
     return output
 
 
-# Disconnect Facebook connection
+# Disconnect Facebook connection (course)
 @app.route('/fbdisconnect')
 def fbdisconnect():
     '''Function disconnects Facebook user's session.'''
@@ -145,7 +145,7 @@ def fbdisconnect():
     return "you have been logged out"
 
 
-# Establish connection using Google credentials
+# Establish connection using Google credentials (course)
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
     '''Function connects a session based on Google user's
@@ -242,7 +242,7 @@ def gconnect():
     return output
 
 
-# Create user
+# Create user (course)
 def createUser(login_session):
     ''' Function gathers using information from login session and returns user's id
         input(s):
@@ -256,7 +256,7 @@ def createUser(login_session):
     return user.id
 
 
-# Get user
+# Get user (course)
 def getUserInfo(user_id):
     '''Function returns user object for provided user id.
        input(s):
@@ -266,7 +266,7 @@ def getUserInfo(user_id):
     return user
 
 
-# Get user's id
+# Get user's id (course)
 def getUserID(email):
     '''Function takes an email adress and returns the user id if email in table.
        input(s):
@@ -279,7 +279,7 @@ def getUserID(email):
         return None
 
 
-# Disconnect Google connection
+# Disconnect Google connection (course)
 @app.route('/gdisconnect')
 def gdisconnect():
     '''Function disconnects Google user'''
@@ -311,7 +311,7 @@ def gdisconnect():
         return response
 
 
-# Disconnect user based on provider
+# Disconnect user based on provider (course)
 @app.route('/disconnect')
 def disconnect():
     '''Function disconnects Facebook or Google session based on
