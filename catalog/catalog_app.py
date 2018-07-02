@@ -244,7 +244,8 @@ def gconnect():
 
 # Create user (course)
 def createUser(login_session):
-    ''' Function gathers using information from login session and returns user's id
+    ''' Function gathers using information from login session and
+        returns user's id
         input(s):
         login_session - user detail of current login session
     '''
@@ -268,14 +269,16 @@ def getUserInfo(user_id):
 
 # Get user's id (course)
 def getUserID(email):
-    '''Function takes an email adress and returns the user id if email in table.
+    '''Function takes an email adress and returns the user id if
+       email in table.
        input(s):
        email - the user's email address
     '''
     try:
         user = session.query(User).filter_by(email=email).one()
         return user.id
-    except:
+    except Exception:
+        print ('No User ID found.')
         return None
 
 

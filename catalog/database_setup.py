@@ -24,8 +24,8 @@ class User(Base):
 
 
 class Category(Base):
-    '''A category for the books in the catalog app program. Categories will have
-       the following attributes:
+    '''A category for the books in the catalog app program. Categories
+       will have the following attributes:
        Attibute(s):
        id - unique id number
        user_id - id of user that created the category
