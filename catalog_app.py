@@ -217,7 +217,7 @@ def gconnect():
 
     data = answer.json()
 
-    login_session['username'] = data['email']
+    login_session['username'] = data['email']  # data['username'] stopped working
     login_session['picture'] = data['picture']
     login_session['provider'] = 'google'
 
