@@ -36,7 +36,7 @@ def showLogin():
        is 32 characters in length containing both uppercase letters
        and digits.'''
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
-                    for x in xrange(32))
+                    for x in range(32))
     login_session['state'] = state
     return render_template('login.html', STATE=state)
 
@@ -217,9 +217,8 @@ def gconnect():
 
     data = answer.json()
 
-    login_session['username'] = data['name']
+    login_session['username'] = data['email']
     login_session['picture'] = data['picture']
-    login_session['email'] = data['email']
     login_session['provider'] = 'google'
 
     # see if user exists, if it doesn't make a new one
@@ -278,7 +277,7 @@ def getUserID(email):
         user = session.query(User).filter_by(email=email).one()
         return user.id
     except Exception:
-        print ('No User ID found.')
+        print('No User ID found.')
         return None
 
 
@@ -288,7 +287,7 @@ def gdisconnect():
     '''Function disconnects Google user'''
     access_token = login_session.get('access_token')
     if access_token is None:
-        print 'Access Token is None'
+        print('Access Token is None')
         response = make_response(json.dumps(
             'Current user not connected.'), 401)
         response.headers['Content-Type'] = 'application/json'
@@ -302,7 +301,6 @@ def gdisconnect():
         del login_session['access_token']
         del login_session['gplus_id']
         del login_session['username']
-        del login_session['email']
         del login_session['picture']
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
