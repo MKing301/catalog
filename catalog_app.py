@@ -41,110 +41,6 @@ def showLogin():
     return render_template('login.html', STATE=state)
 
 
-# Establish connection using Facebook credentials (course)
-@app.route('/fbconnect', methods=['POST'])
-def fbconnect():
-    '''Function connects a session based on Facebook user's
-       credentials via Facebook API'''
-    if request.args.get('state') != login_session['state']:
-        response = make_response(json.dumps('Invalid state parameter.'), 401)
-        response.headers['Content-Type'] = 'application/json'
-        return response
-    access_token = request.data
-
-    app_id = json.loads(open('fb_client_secrets.json', 'r').read())[
-        'web']['app_id']
-    app_secret = json.loads(
-        open('fb_client_secrets.json', 'r').read())['web']['app_secret']
-    url = (
-        'https://graph.facebook.com/oauth/access_token?'
-        'grant_type=fb_exchange_token&client_id=%s&client_secret=%s'
-        '&fb_exchange_token=%s'
-        ) % (
-        app_id, app_secret, access_token)
-    h = httplib2.Http()
-    result = h.request(url, 'GET')[1]
-
-    # Use token to get user info from API
-    userinfo_url = "https://graph.facebook.com/v2.8/me"
-    '''
-        Due to the formatting for the result from the server token exchange
-        we have to split the token first on commas and select the first index
-        which gives us the key : value for the server access token then we
-        split it on colons to pull out the actual token value and replace
-        the remaining quotes with nothing so that it can be used directly
-        in the graph api calls
-    '''
-    token = result.split(',')[0].split(':')[1].replace('"', '')
-
-    url = (
-        'https://graph.facebook.com/v2.8/me?access_token=%s'
-        '&fields=name,id,email'
-        ) % token
-    h = httplib2.Http()
-    result = h.request(url, 'GET')[1]
-    data = json.loads(result)
-    login_session['provider'] = 'facebook'
-    login_session['username'] = data["name"]
-    login_session['email'] = data["email"]
-    login_session['facebook_id'] = data["id"]
-
-    # The token must be stored in the login_session in order to properly logout
-    login_session['access_token'] = token
-
-    # Get user picture
-    url = (
-        'https://graph.facebook.com/v2.8/me/picture?access_token=%s'
-        '&redirect=0&height=200&width=200'
-        ) % token
-    h = httplib2.Http()
-    result = h.request(url, 'GET')[1]
-    data = json.loads(result)
-
-    login_session['picture'] = data["data"]["url"]
-
-    # see if user exists
-    user_id = getUserID(login_session['email'])
-    if not user_id:
-        user_id = createUser(login_session)
-    login_session['user_id'] = user_id
-
-    output = ''
-    output += '<h1>Welcome, '
-    output += login_session['username']
-
-    output += '!</h1>'
-    output += '<img src="'
-    output += login_session['picture']
-    output += ''' " style = "width: 300px;
-                                height: 300px;border-radius: 150px;
-                                -webkit-border-radius: 150px;
-                                -moz-border-radius: 150px;"> '''
-
-    flash("Now logged in as %s" % login_session['username'], 'success')
-    return output
-
-
-# Disconnect Facebook connection (course)
-@app.route('/fbdisconnect')
-def fbdisconnect():
-    '''Function disconnects Facebook user's session.'''
-    facebook_id = login_session['facebook_id']
-    # The access token must me included to successfully logout
-    access_token = login_session['access_token']
-    url = (
-        'https://graph.facebook.com/%s/permissions?access_token=%s'
-        ) % (facebook_id, access_token)
-    h = httplib2.Http()
-    result = h.request(url, 'DELETE')[1]
-    del login_session['username']
-    del login_session['email']
-    del login_session['picture']
-    del login_session['user_id']
-    del login_session['facebook_id']
-    return "you have been logged out"
-
-
 # Establish connection using Google credentials (course)
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -217,7 +113,7 @@ def gconnect():
 
     data = answer.json()
 
-    login_session['username'] = data['email']  # data['username'] stopped working
+    login_session['email'] = data['email']  # data['email'] stopped working
     login_session['picture'] = data['picture']
     login_session['provider'] = 'google'
 
@@ -229,7 +125,7 @@ def gconnect():
 
     output = ''
     output += '<h1>Welcome, '
-    output += login_session['username']
+    output += login_session['email']
     output += '!</h1>'
     output += '<img src="'
     output += login_session['picture']
@@ -237,7 +133,7 @@ def gconnect():
                     height: 300px;border-radius: 150px;
                     -webkit-border-radius: 150px;
                     -moz-border-radius: 150px;"> '''
-    flash("you are now logged in as %s" % login_session['username'], 'success')
+    flash("you are now logged in as %s" % login_session['email'], 'success')
     return output
 
 
@@ -248,7 +144,7 @@ def createUser(login_session):
         input(s):
         login_session - user detail of current login session
     '''
-    newUser = User(name=login_session['username'], email=login_session[
+    newUser = User(name=login_session['email'], email=login_session[
                     'email'], picture=login_session['picture'])
     session.add(newUser)
     session.commit()
@@ -300,7 +196,7 @@ def gdisconnect():
     if result['status'] == '200':
         del login_session['access_token']
         del login_session['gplus_id']
-        del login_session['username']
+        del login_session['email']
         del login_session['picture']
         response = make_response(json.dumps('Successfully disconnected.'), 200)
         response.headers['Content-Type'] = 'application/json'
@@ -321,9 +217,6 @@ def disconnect():
     if 'provider' in login_session:
         if login_session['provider'] == 'google':
             gdisconnect()
-
-        if login_session['provider'] == 'facebook':
-            fbdisconnect()
 
         flash("You have successfully been logged out.", 'success')
         return redirect(url_for('showCategories'))
@@ -379,7 +272,7 @@ def showCategories():
         categories.
     '''
     categories = session.query(Category).order_by(asc(Category.name))
-    if 'username' not in login_session:
+    if 'email' not in login_session:
         return render_template('public_categories.html',
                                categories=categories)
     else:
@@ -395,7 +288,7 @@ def newCategory():
         input(s):
         category_id - the id of the category to add a new book
     '''
-    if 'username' not in login_session:
+    if 'email' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
         newCategory = Category(
@@ -419,7 +312,7 @@ def editCategory(category_id):
         input(s):
         category_id - the id of the category to delete
     '''
-    if 'username' not in login_session:
+    if 'email' not in login_session:
         return redirect('/login')
     editedCategory = session.query(
         Category).filter_by(id=category_id).one()
@@ -449,7 +342,7 @@ def deleteCategory(category_id):
         input(s):
         category_id - the id of the category to delete
     '''
-    if 'username' not in login_session:
+    if 'email' not in login_session:
         return redirect('/login')
     categoryToDelete = session.query(Category).filter_by(id=category_id).one()
     if categoryToDelete.user_id != login_session['user_id']:
@@ -479,7 +372,7 @@ def showBooks(category_id):
     '''
     category = session.query(Category).filter_by(id=category_id).one()
     books = session.query(Book).filter_by(category_id=category_id)
-    if 'username' not in login_session:
+    if 'email' not in login_session:
         return render_template('public_book_list.html',
                                category=category,
                                books=books,
@@ -499,7 +392,7 @@ def newBook(category_id):
         input(s):
         category_id - the id of the category to add a new book
     '''
-    if 'username' not in login_session:
+    if 'email' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
         newBook = Book(title=request.form['newBookTitle'],
@@ -528,7 +421,7 @@ def editBook(category_id, book_id):
         category_id - the id of the category
         book_id - the id of the book
     '''
-    if 'username' not in login_session:
+    if 'email' not in login_session:
         return redirect('/login')
     editedBook = session.query(Book).filter_by(id=book_id).one()
     if editedBook.user_id != login_session['user_id']:
@@ -566,7 +459,7 @@ def deleteBook(category_id, book_id):
         category - the id of the category the book appears
         book_id - the id of the book
     '''
-    if 'username' not in login_session:
+    if 'email' not in login_session:
         return redirect('/login')
     bookToDelete = session.query(Book).filter_by(id=book_id).one()
     if bookToDelete.user_id != login_session['user_id']:
