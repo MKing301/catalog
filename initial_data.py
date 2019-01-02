@@ -18,7 +18,7 @@ DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 # Create dummy user; Image source:  https://topgear.com.my/os/1
-User1 = User(name="Sarah Carter", email="SCarter@gmail.com",
+User1 = User(email="SCarter@gmail.com",
              picture='''https://topgear.com.my/sites/default/files/
              default_images/avatar-default.png''')
 session.add(User1)
