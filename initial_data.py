@@ -19,8 +19,7 @@ session = DBSession()
 
 # Create dummy user; Image source:  https://topgear.com.my/os/1
 User1 = User(email="SCarter@gmail.com",
-             picture='''https://topgear.com.my/sites/default/files/
-             default_images/avatar-default.png''')
+             picture='''https://topgear.com.my/sites/default/files/default_images/avatar-default.png''')
 session.add(User1)
 session.commit()
 
@@ -218,4 +217,4 @@ book5 = Book(user_id=1,
 session.add(book5)
 session.commit()
 
-print "added books!"
+print("added books!")
