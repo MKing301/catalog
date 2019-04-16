@@ -1,18 +1,26 @@
 {% extends "main.html" %}
 {% block content %}
+
+	<style>
+		.g-signin2 {
+			width: 10%;
+			margin: 0 auto;
+		}
+	</style>
+
  	<!-- Form for login -->
 	<div class="jumbotron text-center">
     	<h1>Oauth 2.0 Book Catalog Portal</h1>
   
 		<!-- GOOGLE SIGN IN BUTTON-->
-		<button id="signinButton">Google Signin</button>
+		<div class="g-signin2"></div>
 		<div id="result"></div>
 		
 		<script>
-				$('#signinButton').click(function() {
+				$('.g-signin2').click(function() {
 					function signInCallback(authResult){
 						if (authResult['code']){
-							$('#signinButton').attr('style', 'display: none');
+							$('.g-signin2').attr('style', 'display: none');
 							$.ajax({
 								type: 'POST',
 								url: '/gconnect?state={{STATE}}',
